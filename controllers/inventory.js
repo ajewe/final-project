@@ -2,32 +2,22 @@ const mysql = require('mysql')
 const pool = require('../sql/connection')
 const { handleSQLError } = require('../sql/error')
 
-//each user can access their log history (all) and then by date
-//this id needs to be user_id
-const getAllLogs = (req, res) => {
+//each user can access their inventory (all)
+//this id needs to be lab_id (associated with user)
+const getAllInventory = (req, res) => {
 
-  pool.query(`SELECT * FROM logs WHERE user_id = ${req.params.id}`, (err, rows) => {
+  pool.query(`SELECT * FROM inventory WHERE lab_id = ${req.body.id}`, (err, rows) => {
     if (err) return handleSQLError(res, err)
     return res.json(rows);
   })
 }
 
-//?????????? This I'm using req.body, the one before i'm using req.params
-const getLogByDate = (req, res) => {
-  let sql = "SELECT * FROM logs WHERE date = ?"
-  sql = mysql.format(sql, [ req.body.date ])
+//should get each item by name? i dunnnno
 
-  pool.query(sql, (err, rows) => {
-    if (err) return handleSQLError(res, err)
-    return res.json(rows);
-  })
-}
-
-//would be cool if mult. users could access same log...
-const createLog = (req, res) => {
-  const { date, entry, user_id } = req.body
-  let sql = "INSERT INTO logs (date, entry, user_id) VALUES (?, ?, ?)"
-  sql = mysql.format(sql, [ date, entry, user_id ])
+const createItem = (req, res) => {
+  const { order_date, chemical, quantity, location, size, lab_id } = req.body
+  let sql = "INSERT INTO inventory (order_date, chemical, quantity, location, size, lab_id) VALUES (?, ?, ?, ?, ?, ?)"
+  sql = mysql.format(sql, [ order_date, chemical, quantity, location, size, lab_id ])
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
@@ -35,10 +25,10 @@ const createLog = (req, res) => {
   })
 }
 
-const updateLogById = (req, res) => {
-  const { date, entry, user_id } = req.body
-  let sql = "UPDATE logs SET date = ?, entry = ?, user_id = ? WHERE id = ?"
-  sql = mysql.format(sql, [ date, entry, user_id, req.params.id ])
+const updateItem = (req, res) => {
+  const { order_date, chemical, quantity, location, size, lab_id } = req.body
+  let sql = "UPDATE inventory SET order_date = ?, chemical = ?, quantity = ?, location = ?, size = ?, lab_id = ? WHERE id = ?"
+  sql = mysql.format(sql, [ order_date, chemical, quantity, location, size, lab_id, req.params.id ])
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
@@ -59,9 +49,8 @@ const updateLogById = (req, res) => {
 
 module.exports = {
   // getAllUsers,
-  getAllLogs,
-  getLogByDate,
-  createLog,
-  updateLogById,
+  getAllInventory,
+  createItem,
+  updateItem,
   // deleteUserById
 }
