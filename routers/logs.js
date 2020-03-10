@@ -5,13 +5,13 @@ const router = express.Router()
 
 // router.get('/', authenticate, logsController.getAllUsers)
 //need to change slash value things
-router.get('/', authenticate, logsController.getAllLogs)
+router.get('/', logsController.getAllLogs)
 
-router.get('/', authenticate, logsController.getLogByDate)
+router.get('/', logsController.getLogByDate)
 
-router.post('/', authenticate, logsController.createLog)
+router.post('/', logsController.createLog)
 
-router.put('/:id', authenticate, logsController.updateLogById)
+router.put('/:id', logsController.updateLogById)
 
 // router.delete('/:first_name', authenticate, logsController.deleteUserByFirstName)
 

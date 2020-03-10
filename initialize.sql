@@ -43,3 +43,22 @@ CREATE TABLE inventory (
   REFERENCES labs (id)
     ON DELETE CASCADE
 );
+
+INSERT INTO users
+	(first_name, last_name, email)
+VALUES 
+  ("James","Butt", "email@email.com"),
+  ("Josephine","Darakjy", "email@email.com"),
+  ("Art","Venere", "email@email.com"),
+  ("Lenna","Paprocki", "email@email.com"),
+  ("Donette","Foller", "email@email.com"),
+  ("Simona","Morasca", "email@email.com"),
+  ("Mitsue","Tollner", "email@email.com"),
+  ("Leota","Dilliard", "email@email.com"),
+  ("Sage","Wieser", "email@email.com"),
+  ("Kris","Marrier", "email@email.com"),
+  ("Minna","Amigon", "email@email.com"),
+  ("Abel","Maclead", "email@email.com"),
+  ("Kiley","Caldarera", "email@email.com"),
+  ("Graciela","Ruta", "email@email.com"),
+  ("Chauncey","Motley", "email@email.com");

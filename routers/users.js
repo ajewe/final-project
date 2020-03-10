@@ -5,12 +5,11 @@ const router = express.Router()
 
 // router.get('/', authenticate, usersController.getAllUsers)
 //need to change slash values
-router.get('/user/:id', authenticate, usersController.getUserById)
+router.get('/user/:id', usersController.getUserById)
 
-//THESE WONT WORKKKKKKKKK i dont think
-// router.post('/user/create', authenticate, usersController.createUser)
+router.post('/user/create', usersController.createUser)
 
-// router.put('/user/update/:id', authenticate, usersController.updateUserById)
+router.put('/user/update/:id', usersController.updateUserById)
 
 // router.delete('/:first_name', authenticate, usersController.deleteUserByFirstName)
 
