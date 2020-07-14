@@ -7,6 +7,9 @@ const router = express.Router()
 //need to change slash value things
 router.get('/', logsController.getAllLogs)
 
+//pre sql
+router.get('/all', logsController.getLogs)
+
 router.get('/', logsController.getLogByDate)
 
 router.post('/', logsController.createLog)

@@ -5,6 +5,8 @@ const router = express.Router()
 
 // router.get('/', authenticate, usersController.getAllUsers)
 //need to change slash values
+router.get('/', usersController.getAllUsers)
+
 router.get('/user/:id', usersController.getUserById)
 
 router.post('/user/create', usersController.createUser)

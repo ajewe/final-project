@@ -1,15 +1,21 @@
 const mysql = require('mysql')
 const pool = require('../sql/connection')
 const { handleSQLError } = require('../sql/error')
+//before getting info from sql db
+const logs = require('../data/sampleLogs');
 
 //each user can access their log history (all) and then by date
 //this id needs to be user_id
 const getAllLogs = (req, res) => {
-
   pool.query(`SELECT * FROM logs WHERE user_id = ${req.params.id}`, (err, rows) => {
     if (err) return handleSQLError(res, err)
     return res.json(rows);
   })
+}
+
+//pre-sql
+const getLogs = ( req, res ) => {
+  res.json(logs)
 }
 
 //?????????? This I'm using req.body, the one before i'm using req.params
@@ -64,4 +70,5 @@ module.exports = {
   createLog,
   updateLogById,
   // deleteUserById
+  getLogs
 }
