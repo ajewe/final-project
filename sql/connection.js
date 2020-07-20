@@ -9,8 +9,8 @@ class Connection {
         connectionLimit: 100,
         host: 'localhost',
         user: 'root',
-        password: 'java123',
-        database: 'lab'
+        password: 'V-9qpVj-',
+        database: 'sys'
       }
 
       if (process.env.NODE_ENV === 'production' && process.env.CLOUD_INSTANCE) {
@@ -19,6 +19,10 @@ class Connection {
       }
 
       this.pool = mysql.createPool(config)
+
+      this.pool.on('connection', function (connection) {
+        console.log('connected to mysql')
+      });
 
       return this.pool
     }

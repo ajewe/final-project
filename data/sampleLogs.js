@@ -1,8 +1,8 @@
 module.exports = [
   {
-    "procedures": [
+    "procedures": [ // foreign key to a procedures table
       {
-        "date": "11/11/11",
+        "date": "11/11/11", // date, entry, logid fk
         "entry": "entry for procedure 1"
       },
       {
@@ -10,17 +10,17 @@ module.exports = [
         "entry": "entry for procedure 2"
       }
     ],
-    "bookName": "Book 2",
-    "bookEntryNumber": 1,
-    "rxnSketch": {
+    "bookName": "Book 2", //foreign key to book
+    "bookEntryNumber": 1, // int
+    "rxnSketch": { // json type
       "fileData": null,
       "fileType": null,
     },
-    "quickInfo": "QUICKINFO1",
-    "results": "RESULTS1",
-    "yield": "90%",
-    "lastUpdated": "1591908933467",
-    "logId": 5,
+    "quickInfo": "QUICKINFO1", //varcar
+    "results": "RESULTS1", //varcar
+    "yield": "90%", //varcar
+    "lastUpdated": "1591908933467", //varcar
+    "logId": 5, // int
   },
   {
     "procedures": [
