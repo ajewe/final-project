@@ -1,8 +1,21 @@
+// const mysql = require('mysql')
+// const pool = require('../sql/connection')
+// const { handleSQLError } = require('../sql/error')
+// const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const logger = (req, res, next) => {
-  console.log(`${req.path} ${new Date().toISOString()}`)
-  next()
+const authMiddleware = (req, res, next) => {
+  const token = req.header("token")
+  try {
+    let userObj = jwt.verify(token, 'shhh')
+    //token is good
+    req.userId = userObj.userId
+    next();
+  }
+  catch {
+    res.send("Unauthorized")
+  }
+  return
 }
 
 const authenticate = (req, res, next) => {
@@ -19,6 +32,6 @@ const authenticate = (req, res, next) => {
 }
 
 module.exports = {
-  logger,
+  authMiddleware,
   authenticate
 }

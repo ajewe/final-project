@@ -6,7 +6,8 @@ CREATE TABLE users (
   id INT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(50),
   last_name VARCHAR(50),
-  email VARCHAR(50),
+  email VARCHAR(50) NOT NULL,
+  password VARCHAR(100) NOT NULL,
   logged_in TINYINT,
   PRIMARY KEY (id)
 );
@@ -68,23 +69,11 @@ CREATE TABLE inventory (
 );
 
 INSERT INTO users
-	(first_name, last_name, email, logged_in)
+	(first_name, last_name, email, password, logged_in)
 VALUES 
-  ("James","Butt", "email@email.com", 0),
-  ("Josephine","Darakjy", "email@email.com", 0),
-  ("Art","Venere", "email@email.com", 0),
-  ("Lenna","Paprocki", "email@email.com", 0),
-  ("Donette","Foller", "email@email.com", 0),
-  ("Simona","Morasca", "email@email.com", 0),
-  ("Mitsue","Tollner", "email@email.com", 0),
-  ("Leota","Dilliard", "email@email.com", 0),
-  ("Sage","Wieser", "email@email.com", 0),
-  ("Kris","Marrier", "email@email.com", 0),
-  ("Minna","Amigon", "email@email.com", 0),
-  ("Abel","Maclead", "email@email.com", 0),
-  ("Kiley","Caldarera", "email@email.com", 0),
-  ("Graciela","Ruta", "email@email.com", 0),
-  ("Chauncey","Motley", "email@email.com", 0);
+  ("James","Butt", "email1@email.com", 'abc123', 0),
+  ("Josephine","Darakjy", "email2@email.com",'abc123', 0),
+  ("Chauncey","Motley", "email3@email.com",'abc123', 0);
 
   INSERT INTO logs
     (user_id, book_name, book_entry_number, rxn_sketch, quick_info, results, yield, last_updated)
