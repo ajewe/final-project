@@ -4,17 +4,12 @@ const logsController = require('../controllers/logs')
 const router = express.Router()
 
 // router.get('/', authenticate, logsController.getAllUsers)
-//need to change slash value things
-router.get('/', logsController.getAllLogs)
+router.get('/', logsController.getAllLogsByUser)
+router.get('/:id', logsController.getLogById)
 
-//pre sql
-router.get('/all', logsController.getLogs)
+router.post('/create', logsController.createLog)
 
-router.get('/', logsController.getLogByDate)
-
-router.post('/', logsController.createLog)
-
-router.put('/:id', logsController.updateLogById)
+// router.put('/:id', logsController.updateLogById)
 
 // router.delete('/:first_name', authenticate, logsController.deleteUserByFirstName)
 

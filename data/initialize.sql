@@ -8,7 +8,6 @@ CREATE TABLE users (
   last_name VARCHAR(50),
   email VARCHAR(50) NOT NULL,
   password VARCHAR(100) NOT NULL,
-  logged_in TINYINT,
   PRIMARY KEY (id)
 );
 
@@ -69,20 +68,20 @@ CREATE TABLE inventory (
 );
 
 INSERT INTO users
-	(first_name, last_name, email, password, logged_in)
+	(first_name, last_name, email, password)
 VALUES 
-  ("James","Butt", "email1@email.com", 'abc123', 0),
-  ("Josephine","Darakjy", "email2@email.com",'abc123', 0),
-  ("Chauncey","Motley", "email3@email.com",'abc123', 0);
+  ("James","Butt", "email1@email.com", '$2b$10$2GAXxmrcSesWfMB56SUziehilZ0uC6WH6bDW98WJUjivo9zCLvryO'),
+  ("Josephine","Darakjy", "email2@email.com",'$2b$10$2GAXxmrcSesWfMB56SUziehilZ0uC6WH6bDW98WJUjivo9zCLvryO'),
+  ("Chauncey","Motley", "email3@email.com",'abc123');
 
   INSERT INTO logs
     (user_id, book_name, book_entry_number, rxn_sketch, quick_info, results, yield, last_updated)
   VALUES
-  (1, "Book 2", 1, '{ "fileData": null, "fileType": null }', "QUICKINFO1", "RESULTS1", "90%", "1591908933467"), 
-  (1, "Book 1", 4, '{ "fileData": null, "fileType": null }', "QUICKINFO1", "RESULTS1", "90%", "1591908909547"),
-  (1, "Book 1", 3, '{ "fileData": null, "fileType": null }', "QUICKINFO2", "RESULTS2", "95%", "1591908872958"),
-  (1, "Book 1", 2, '{ "fileData": null, "fileType": null }', "QUICKINFO3", "RESULTS3", "100%", "1591908806037"),
-  (1, "Book 1", 1, '{ "fileData": null, "fileType": null }', "QUICKINFO4", "RESULTS4", "105%", "1591908787894");
+  (2, "Book 2", 1, '{ "fileData": null, "fileType": null }', "QUICKINFO1", "RESULTS1", "90%", "1591908933467"), 
+  (2, "Book 1", 4, '{ "fileData": null, "fileType": null }', "QUICKINFO1", "RESULTS1", "90%", "1591908909547"),
+  (2, "Book 1", 3, '{ "fileData": null, "fileType": null }', "QUICKINFO2", "RESULTS2", "95%", "1591908872958"),
+  (2, "Book 1", 2, '{ "fileData": null, "fileType": null }', "QUICKINFO3", "RESULTS3", "100%", "1591908806037"),
+  (2, "Book 1", 1, '{ "fileData": null, "fileType": null }', "QUICKINFO4", "RESULTS4", "105%", "1591908787894");
 
   INSERT INTO procedures
     (log_id, date, entry)
@@ -101,5 +100,5 @@ VALUES
   INSERT INTO books
     (book, user_id)
   VALUES
-    ("Book 2", 1),
-    ("Book 1", 1);
+    ("Book 2", 2),
+    ("Book 1", 2);

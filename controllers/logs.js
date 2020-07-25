@@ -1,27 +1,12 @@
 const mysql = require('mysql')
 const pool = require('../sql/connection')
 const { handleSQLError } = require('../sql/error')
-//before getting info from sql db
-const logs = require('../data/sampleLogs');
 
-//each user can access their log history (all) and then by date
-//this id needs to be user_id
-const getAllLogs = (req, res) => {
-  pool.query(`SELECT * FROM logs WHERE user_id = ${req.params.id}`, (err, rows) => {
-    if (err) return handleSQLError(res, err)
-    return res.json(rows);
-  })
-}
-
-//pre-sql
-const getLogs = ( req, res ) => {
-  res.json(logs)
-}
-
-//?????????? This I'm using req.body, the one before i'm using req.params
-const getLogByDate = (req, res) => {
-  let sql = "SELECT * FROM logs WHERE date = ?"
-  sql = mysql.format(sql, [ req.body.date ])
+//would be cool if mult. users could access same log
+const getAllLogsByUser = (req, res) => {
+  const userId = req.userId
+  let sql = "SELECT * FROM logs WHERE user_id = ?"
+  sql = mysql.format(sql, [ userId ])
 
   pool.query(sql, (err, rows) => {
     if (err) return handleSQLError(res, err)
@@ -29,46 +14,72 @@ const getLogByDate = (req, res) => {
   })
 }
 
-//would be cool if mult. users could access same log...
+const getLogById = (req, res) => {
+  const userId = req.userId
+  let sql = "SELECT * FROM logs WHERE id = ? AND user_id = ?"
+  sql = mysql.format(sql, [ req.params.id, userId ])
+
+  pool.query(sql, (err, log) => {
+    if (err) return handleSQLError(res, err)
+  
+    //select from procedures with log id
+    let sql = "SELECT date, entry FROM procedures WHERE log_id = ?"
+    sql = mysql.format(sql, [ req.params.id ])
+
+    pool.query(sql, (err, procedures) => {
+      if (err) return handleSQLError(res, err)
+      return res.json({
+        procedures: [...procedures],
+        ...log[0]
+      });
+    })
+  })
+}
+
+//insert into logs with user_id, insert into procedures with log_id
 const createLog = (req, res) => {
-  const { date, entry, user_id } = req.body
-  let sql = "INSERT INTO logs (date, entry, user_id) VALUES (?, ?, ?)"
-  sql = mysql.format(sql, [ date, entry, user_id ])
+  const userId = req.userId
+  const { bookName, bookEntryNumber, rxnSketch, quickInfo, results, yield, lastUpdated } = req.body
+  
+  //this will generate the log_id
+  let sql = "INSERT INTO logs (user_id, book_name, book_entry_number, rxn_sketch, quick_info, results, yield, last_updated) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+  sql = mysql.format(sql, [ userId, bookName, bookEntryNumber, rxnSketch, quickInfo, results, yield, lastUpdated ])
 
-  pool.query(sql, (err, results) => {
+  pool.query(sql, (err, log) => {
     if (err) return handleSQLError(res, err)
-    return res.json({ newId: results.insertId });
+
+    const logId = log.insertId
+    const arrayOfProcedures = []
+
+    req.body.procedures.map(p => {
+      arrayOfProcedures.push([ logId, p.date, p.entry])
+    })
+
+    let sql = "INSERT INTO procedures (log_id, date, entry) VALUES ?"
+    sql = mysql.format(sql, [ arrayOfProcedures ])
+
+    pool.query(sql, (err, procedures) => {
+      if (err) return handleSQLError(res, err)
+      return res.send("Log Added!")
+    })
   })
 }
 
-const updateLogById = (req, res) => {
-  const { date, entry, user_id } = req.body
-  let sql = "UPDATE logs SET date = ?, entry = ?, user_id = ? WHERE id = ?"
-  sql = mysql.format(sql, [ date, entry, user_id, req.params.id ])
-
-  pool.query(sql, (err, results) => {
-    if (err) return handleSQLError(res, err)
-    return res.status(204).json();
-  })
-}
-
-//delete user or just update as inactive user?
-// const deleteUserById = (req, res) => {
-//   let sql = "DELETE FROM users WHERE id = ?"
-//   sql = mysql.format(sql, [ req.params.id ])
+// const updateLogById = (req, res) => {
+//   const { date, entry, user_id } = req.body
+//   let sql = "UPDATE logs SET date = ?, entry = ?, user_id = ? WHERE id = ?"
+//   sql = mysql.format(sql, [ date, entry, user_id, req.params.id ])
 
 //   pool.query(sql, (err, results) => {
 //     if (err) return handleSQLError(res, err)
-//     return res.json({ message: `Deleted ${results.affectedRows} user(s)` });
+//     return res.status(204).json();
 //   })
 // }
 
 module.exports = {
-  // getAllUsers,
-  getAllLogs,
-  getLogByDate,
+  getAllLogsByUser,
+  getLogById,
   createLog,
-  updateLogById,
-  // deleteUserById
-  getLogs
+
+  // updateLogById,
 }
