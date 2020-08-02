@@ -10,7 +10,8 @@ class Connection {
         host: 'localhost',
         user: 'root',
         password: 'V-9qpVj-',
-        database: 'sys'
+        database: 'sys',
+        multipleStatements: true
       }
 
       if (process.env.NODE_ENV === 'production' && process.env.CLOUD_INSTANCE) {

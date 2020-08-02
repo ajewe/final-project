@@ -11,10 +11,20 @@ CREATE TABLE users (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE books (
+  id INT NOT NULL AUTO_INCREMENT,
+  book VARCHAR(20) NOT NULL,
+  user_id INT NOT NULL,
+  PRIMARY KEY (book),
+  UNIQUE KEY (id),
+  FOREIGN KEY (user_id)
+  REFERENCES users (id)
+);
+
 CREATE TABLE logs (
   id INT NOT NULL AUTO_INCREMENT,
   user_id INT NOT NULL,
-  book_name VARCHAR(20),
+  book_name VARCHAR(20) NOT NULL,
   book_entry_number INT NOT NULL,
   rxn_sketch JSON,
   quick_info VARCHAR(50),
@@ -23,49 +33,44 @@ CREATE TABLE logs (
   last_updated VARCHAR(20) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (user_id)
-  REFERENCES users (id)
-    ON DELETE CASCADE
+  REFERENCES users (id),
+  FOREIGN KEY (book_name)
+  REFERENCES books (book)
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE procedures (
+  id INT NOT NULL AUTO_INCREMENT,
   log_id INT NOT NULL,
   date VARCHAR(20),
   entry TEXT,
+  PRIMARY KEY (id),
   FOREIGN KEY (log_id)
   REFERENCES logs (id)
-    ON DELETE CASCADE
 );
 
-CREATE TABLE books (
-  book VARCHAR(20),
-  user_id INT NOT NULL,
-  FOREIGN KEY (user_id)
-  REFERENCES users (id)
-    ON DELETE CASCADE
-);
+-- CREATE TABLE labs (
+--   id INT NOT NULL AUTO_INCREMENT,
+--   user_id INT NOT NULL,
+--   lab_name VARCHAR(50),
+--   PRIMARY KEY (id),
+--   FOREIGN KEY (user_id)
+--   REFERENCES users (id)
+--     ON DELETE CASCADE
+-- );
 
-CREATE TABLE labs (
-  id INT NOT NULL AUTO_INCREMENT,
-  user_id INT NOT NULL,
-  lab_name VARCHAR(50),
-  PRIMARY KEY (id),
-  FOREIGN KEY (user_id)
-  REFERENCES users (id)
-    ON DELETE CASCADE
-);
-
-CREATE TABLE inventory (
-  id INT NOT NULL AUTO_INCREMENT,
-  lab_id INT NOT NULL,
-  chemical VARCHAR(50),
-  quantity VARCHAR(20),
-  location VARCHAR(50),
-  size VARCHAR(20),
-  PRIMARY KEY (id),
-  FOREIGN KEY (lab_id)
-  REFERENCES labs (id)
-    ON DELETE CASCADE
-);
+-- CREATE TABLE inventory (
+--   id INT NOT NULL AUTO_INCREMENT,
+--   lab_id INT NOT NULL,
+--   chemical VARCHAR(50),
+--   quantity VARCHAR(20),
+--   location VARCHAR(50),
+--   size VARCHAR(20),
+--   PRIMARY KEY (id),
+--   FOREIGN KEY (lab_id)
+--   REFERENCES labs (id)
+--     ON DELETE CASCADE
+-- );
 
 INSERT INTO users
 	(first_name, last_name, email, password)
@@ -73,6 +78,12 @@ VALUES
   ("James","Butt", "email1@email.com", '$2b$10$2GAXxmrcSesWfMB56SUziehilZ0uC6WH6bDW98WJUjivo9zCLvryO'),
   ("Josephine","Darakjy", "email2@email.com",'$2b$10$2GAXxmrcSesWfMB56SUziehilZ0uC6WH6bDW98WJUjivo9zCLvryO'),
   ("Chauncey","Motley", "email3@email.com",'abc123');
+
+  INSERT INTO books
+    (book, user_id)
+  VALUES
+    ("Book 1", 2),
+    ("Book 2", 2);
 
   INSERT INTO logs
     (user_id, book_name, book_entry_number, rxn_sketch, quick_info, results, yield, last_updated)
@@ -96,9 +107,3 @@ VALUES
     (4, "66/66/66", "entry for procedure 2"),
     (5, "05/14/91", "entry for procedure 1"),
     (5, "05/14/91", "entry for procedure 2");
-
-  INSERT INTO books
-    (book, user_id)
-  VALUES
-    ("Book 2", 2),
-    ("Book 1", 2);
