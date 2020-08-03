@@ -7,8 +7,6 @@ const { handleSQLError } = require('../sql/error')
 const createSession = (req, res) => {
   const { email, password } = req.body
 
-  console.log("peee" + req.body)
-  
   let sql = "SELECT * FROM users WHERE email = ?"
   sql = mysql.format(sql, [ email ])
   
