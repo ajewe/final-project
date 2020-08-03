@@ -14,7 +14,6 @@ router.get('/', usersController.getAllUsers)
 router.post('/create', usersController.createUser)
 
 // router.put('/update/:id', usersController.updateUserById)
-
 // router.delete('/:first_name', authenticate, usersController.deleteUserByFirstName)
 
 module.exports = router

@@ -15,8 +15,7 @@ CREATE TABLE books (
   id INT NOT NULL AUTO_INCREMENT,
   book VARCHAR(20) NOT NULL,
   user_id INT NOT NULL,
-  PRIMARY KEY (book),
-  UNIQUE KEY (id),
+  PRIMARY KEY (id),
   FOREIGN KEY (user_id)
   REFERENCES users (id)
 );
@@ -24,7 +23,7 @@ CREATE TABLE books (
 CREATE TABLE logs (
   id INT NOT NULL AUTO_INCREMENT,
   user_id INT NOT NULL,
-  book_name VARCHAR(20) NOT NULL,
+  book_id INT NOT NULL,
   book_entry_number INT NOT NULL,
   rxn_sketch JSON,
   quick_info VARCHAR(50),
@@ -34,8 +33,8 @@ CREATE TABLE logs (
   PRIMARY KEY (id),
   FOREIGN KEY (user_id)
   REFERENCES users (id),
-  FOREIGN KEY (book_name)
-  REFERENCES books (book)
+  FOREIGN KEY (book_id)
+  REFERENCES books (id)
     ON UPDATE CASCADE
 );
 
@@ -86,13 +85,13 @@ VALUES
     ("Book 2", 2);
 
   INSERT INTO logs
-    (user_id, book_name, book_entry_number, rxn_sketch, quick_info, results, yield, last_updated)
+    (user_id, book_id, book_entry_number, rxn_sketch, quick_info, results, yield, last_updated)
   VALUES
-  (2, "Book 2", 1, '{ "fileData": null, "fileType": null }', "QUICKINFO1", "RESULTS1", "90%", "1591908933467"), 
-  (2, "Book 1", 4, '{ "fileData": null, "fileType": null }', "QUICKINFO1", "RESULTS1", "90%", "1591908909547"),
-  (2, "Book 1", 3, '{ "fileData": null, "fileType": null }', "QUICKINFO2", "RESULTS2", "95%", "1591908872958"),
-  (2, "Book 1", 2, '{ "fileData": null, "fileType": null }', "QUICKINFO3", "RESULTS3", "100%", "1591908806037"),
-  (2, "Book 1", 1, '{ "fileData": null, "fileType": null }', "QUICKINFO4", "RESULTS4", "105%", "1591908787894");
+  (2, 2, 1, '{ "fileData": null, "fileType": null }', "QUICKINFO1", "RESULTS1", "90%", "1591908933467"), 
+  (2, 1, 4, '{ "fileData": null, "fileType": null }', "QUICKINFO1", "RESULTS1", "90%", "1591908909547"),
+  (2, 1, 3, '{ "fileData": null, "fileType": null }', "QUICKINFO2", "RESULTS2", "95%", "1591908872958"),
+  (2, 1, 2, '{ "fileData": null, "fileType": null }', "QUICKINFO3", "RESULTS3", "100%", "1591908806037"),
+  (2, 1, 1, '{ "fileData": null, "fileType": null }', "QUICKINFO4", "RESULTS4", "105%", "1591908787894");
 
   INSERT INTO procedures
     (log_id, date, entry)

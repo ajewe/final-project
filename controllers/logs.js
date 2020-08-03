@@ -5,7 +5,8 @@ const { handleSQLError } = require('../sql/error')
 //would be cool if mult. users could access same log
 const getAllLogsByUser = (req, res) => {
   const userId = req.userId
-  let sql = "SELECT * FROM logs WHERE user_id = ?"
+  // let sql = "SELECT *, books.book FROM logs WHERE user_id = ? AND JOIN books WHERE logs.book_id = books.id"
+  let sql = "SELECT logs.*, books.book FROM logs JOIN books WHERE logs.user_id = ? AND logs.book_id = books.id"
   sql = mysql.format(sql, [ userId ])
 
   pool.query(sql, (err, rows) => {
@@ -16,7 +17,7 @@ const getAllLogsByUser = (req, res) => {
 
 const getLogById = (req, res) => {
   const userId = req.userId
-  let sql = "SELECT * FROM logs WHERE id = ? AND user_id = ?"
+  let sql = "SELECT logs.*, books.book FROM logs JOIN books WHERE logs.id = ? AND logs.user_id = ? AND logs.book_id = books.id" 
   sql = mysql.format(sql, [ req.params.id, userId ])
 
   pool.query(sql, (err, log) => {
@@ -39,12 +40,12 @@ const getLogById = (req, res) => {
 //insert into logs with user_id, insert into procedures with log_id
 const createLog = (req, res) => {
   const userId = req.userId
-  const { bookName, bookEntryNumber, rxnSketch, quickInfo, results, yield, lastUpdated } = req.body
+  const { bookEntryNumber, bookId, rxnSketch, quickInfo, results, yield, lastUpdated } = req.body
   const rxnSketchJSONstring = JSON.stringify({ "fileData": rxnSketch.fileData, "fileType": rxnSketch.fileType })
 
   //this will generate the log_id
-  let sql = "INSERT INTO logs (user_id, book_name, book_entry_number, rxn_sketch, quick_info, results, yield, last_updated) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-  sql = mysql.format(sql, [ userId, bookName, bookEntryNumber, rxnSketchJSONstring, quickInfo, results, yield, lastUpdated ])
+  let sql = "INSERT INTO logs (user_id, book_id, book_entry_number, rxn_sketch, quick_info, results, yield, last_updated) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+  sql = mysql.format(sql, [ userId, bookId, bookEntryNumber, rxnSketchJSONstring, quickInfo, results, yield, lastUpdated ])
 
   pool.query(sql, (err, log) => {
     if (err) return handleSQLError(res, err)
@@ -68,14 +69,14 @@ const createLog = (req, res) => {
 }
 
 const updateLogById = (req, res) => {
-  const { bookEntryNumber, rxnSketch, quickInfo, results, yield, lastUpdated } = req.body
-  let sql = "UPDATE logs SET book_entry_number = ?, rxn_sketch = ?, quick_info = ?, results = ?, yield = ?, last_updated = ? WHERE id = ?"
-  sql = mysql.format(sql, [ bookEntryNumber, rxnSketch, quickInfo, results, yield, lastUpdated, req.params.id ])
+  const {  rxn_sketch, quick_info, results, yield, last_updated } = req.body
+  const rxnSketchJSONstring = JSON.stringify({ "fileData": rxn_sketch.fileData, "fileType": rxn_sketch.fileType })
+  let sql = "UPDATE logs SET rxn_sketch = ?, quick_info = ?, results = ?, yield = ?, last_updated = ? WHERE id = ?"
+  sql = mysql.format(sql, [ rxnSketchJSONstring, quick_info, results, yield, last_updated, req.params.id ])
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
 
-    // const arrayOfProcedures = []
     let queries = req.body.procedures.map((p) => {
       let sql = "UPDATE procedures SET date = ?, entry = ? WHERE id = ?"
       return mysql.format(sql, [ p.date, p.entry, p.id ])
@@ -83,7 +84,7 @@ const updateLogById = (req, res) => {
 
       pool.query(queries.join('; '), (err, results) => {
         if (err) return handleSQLError(res, err)
-        res.send('ok')
+        return res.send({ msg: "Log Updated!" })
       })
     })
   }
