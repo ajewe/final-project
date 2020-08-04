@@ -7,9 +7,9 @@ class Connection {
 
       const config = {
         connectionLimit: 100,
-        host: 'localhost',
-        user: 'root',
-        password: 'V-9qpVj-',
+        host: 'mysql://b237b5250e2574:ad48e812@us-cdbr-east-02.cleardb.com/heroku_0fd541684de6c3a?reconnect=true',
+        user: 'b237b5250e2574',
+        password: 'ad48e812',
         database: 'sys',
         multipleStatements: true
       }
