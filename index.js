@@ -11,10 +11,15 @@ const { authMiddleware } = require('./middleware')
 
 const app = express();
 app.use(cors())
+app.use(bodyParser.json())
+app.use(express.static("public"))
 
 const port = process.env.PORT || 4001;
 
-app.use(bodyParser.json())
+app.get('/', (req, res) => {
+  res.send('Welcome to our server!')
+})
+
 app.use('/user', usersRouter)
 app.use('/login', sessionRouter)
 
@@ -23,12 +28,7 @@ app.use('/login', sessionRouter)
 
 app.use(authMiddleware)
 app.use('/logs', logsRouter)
-// app.use('/procedures', proceduresRouter)
 app.use('/books', booksRouter)
-
-app.get('/', (req, res) => {
-  res.send('Welcome to our server!')
-})
 
 app.listen(port, () => {
  console.log(`Web server is listening on port ${port}!`);
