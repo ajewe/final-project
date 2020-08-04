@@ -27,7 +27,7 @@ const createSession = (req, res) => {
         const timestamp = new Date().getTime();
         const userObj = { userId: data.id, iat: timestamp}
         const token = jwt.sign(userObj, 'shhh')
-        res.json({token: token})
+        res.json({token: token, firstName: data.first_name, lastName: data.last_name, email: data.email})
       })
   })
 }
