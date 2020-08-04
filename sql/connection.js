@@ -14,10 +14,10 @@ class Connection {
         multipleStatements: true
       }
 
-      if (process.env.NODE_ENV === 'production' && process.env.CLOUD_INSTANCE) {
-        console.log(`connect socket: ${process.env.CLOUD_INSTANCE}`)
-        config.socketPath = `/cloudsql/${process.env.CLOUD_INSTANCE}`
-      }
+      // if (process.env.NODE_ENV === 'production' && process.env.CLOUD_INSTANCE) {
+      //   console.log(`connect socket: ${process.env.CLOUD_INSTANCE}`)
+      //   config.socketPath = `/cloudsql/${process.env.CLOUD_INSTANCE}`
+      // }
 
       this.pool = mysql.createPool(config)
 

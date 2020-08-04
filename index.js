@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const usersRouter = require('./routers/users');
 const sessionRouter = require('./routers/session')
 const logsRouter = require('./routers/logs');
-const proceduresRouter = require('./routers/procedures')
 const booksRouter = require('./routers/books')
 // const labsRouter = require('./routers/labs');
 // const inventoryRouter = require('./routers/inventory');
