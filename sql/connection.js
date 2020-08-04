@@ -7,10 +7,10 @@ class Connection {
 
       const config = {
         connectionLimit: 100,
-        host: 'mysql://b237b5250e2574:ad48e812@us-cdbr-east-02.cleardb.com/heroku_0fd541684de6c3a?reconnect=true',
-        user: 'b237b5250e2574',
-        password: 'ad48e812',
-        database: 'sys',
+        host: 'ffn96u87j5ogvehy.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        user: 'cf32f6i5cuoo8sz4',
+        password: 'jb7d7pse0ka4rq5g',
+        database: 'aqdsdg3f64t7x685',
         multipleStatements: true
       }
 
