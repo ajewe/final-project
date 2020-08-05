@@ -43,15 +43,8 @@ const updateBookNameById = (req, res) => {
 }
 
 const checkIfLogsInBook = (req, res, cb) => {
-  //get bookName from id
-  let sql = `SELECT book FROM books WHERE id = ${req.params.id}`
-  sql = mysql.format(sql)
-
-  pool.query(sql, (err, bookTiedToId) => {
-    //only 1 book would appear
-    //search logs if any belong to book with same bookName
-    let sql = "SELECT * FROM logs WHERE book_name = ?"
-    sql = mysql.format(sql, [bookTiedToId[0].book])
+    let sql = "SELECT * FROM logs WHERE book_id = ?"
+    sql = mysql.format(sql, [req.params.id])
     
     pool.query(sql, (err, rows) => {
     if (err) return handleSQLError(res, err)
@@ -62,8 +55,7 @@ const checkIfLogsInBook = (req, res, cb) => {
       cb(false)
     }
   })
-  })
-}
+  }
 
 const deleteBookById = (req, res) => {
   //check if book is empty / contains no logs
