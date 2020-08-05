@@ -3,24 +3,6 @@ const bcrypt = require('bcrypt')
 const pool = require('../sql/connection')
 const { handleSQLError } = require('../sql/error')
 
-const getAllUsers = (req, res) => {
-  pool.query("SELECT * FROM users", (err, rows) => {
-    if (err) return handleSQLError(res, err)
-    return res.json(rows);
-  })
-}
-
-// Maybe in settings, would want to get user info
-// const getUserById = (req, res) => {
-//   let sql = "SELECT * FROM users WHERE id = ?"
-//   sql = mysql.format(sql, [ req.params.id ])
-
-//   pool.query(sql, (err, rows) => {
-//     if (err) return handleSQLError(res, err)
-//     return res.json(rows);
-//   })
-// }
-
 const checkIfExistingUser = (req, res, cb) => {
   const { email } = req.body
   let sql = "SELECT * FROM users WHERE email = ?"
@@ -63,32 +45,6 @@ const createUser = (req, res) => {
   })
 }
 
-// const updateUserById = (req, res) => {
-//   const { firstName, lastName, email, lab_id } = req.body
-//   let sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, lab_id = ? WHERE id = ?"
-//   sql = mysql.format(sql, [ firstName, lastName, email, lab_id, req.params.id ])
-
-//   pool.query(sql, (err, res) => {
-//     if (err) return handleSQLError(res, err)
-//     return res.status(204).json();
-//   })
-// }
-
-//delete user or just update as inactive user?
-// const deleteUserById = (req, res) => {
-//   let sql = "DELETE FROM users WHERE id = ?"
-//   sql = mysql.format(sql, [ req.params.id ])
-
-//   pool.query(sql, (err, results) => {
-//     if (err) return handleSQLError(res, err)
-//     return res.json({ message: `Deleted ${results.affectedRows} user(s)` });
-//   })
-// }
-
 module.exports = {
-  getAllUsers,
-  // getUserById,
-  createUser,
-  // updateUserById,
-  // deleteUserById
+  createUser
 }
