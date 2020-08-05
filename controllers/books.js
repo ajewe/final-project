@@ -61,18 +61,19 @@ const deleteBookById = (req, res) => {
   //check if book is empty / contains no logs
   checkIfLogsInBook(req, res, (bookContainsLogs) => {
     if (bookContainsLogs) {
-      res.send("Book contains logs and cannot be deleted")
+      res.json({ message: "Book contains logs and cannot be deleted" })
     } else {
-      let sql = "DELETE FROM books WHERE id = ?"
-      sql = mysql.format(sql, [ req.params.id ])
+        let sql = "DELETE FROM books WHERE id = ?"
+        sql = mysql.format(sql, [ req.params.id ])
 
-      pool.query(sql, (err, results) => {
-        if (err) return handleSQLError(res, err)
-        return res.json({ message: `Deleted ${results.affectedRows} book(s)` });
-      })
-    }
-    })
-  }
+        pool.query(sql, (err, results) => {
+          if (err) return handleSQLError(res, err)
+
+          return res.json({ message: `Deleted ${results.affectedRows} book(s)` });
+        })
+      }
+  })
+}
 
 module.exports = {
   getAllBooks,
