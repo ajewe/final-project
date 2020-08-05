@@ -5,7 +5,6 @@ const { handleSQLError } = require('../sql/error')
 //would be cool if mult. users could access same log
 const getAllLogsByUser = (req, res) => {
   const userId = req.userId
-  // let sql = "SELECT *, books.book FROM logs WHERE user_id = ? AND JOIN books WHERE logs.book_id = books.id"
   let sql = "SELECT logs.*, books.book FROM logs JOIN books WHERE logs.user_id = ? AND logs.book_id = books.id"
   sql = mysql.format(sql, [ userId ])
 
