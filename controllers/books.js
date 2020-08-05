@@ -61,7 +61,7 @@ const deleteBookById = (req, res) => {
   //check if book is empty / contains no logs
   checkIfLogsInBook(req, res, (bookContainsLogs) => {
     if (bookContainsLogs) {
-      res.json({ message: "Book contains logs and cannot be deleted" })
+      res.json({ message: "Book has logs" })
     } else {
         let sql = "DELETE FROM books WHERE id = ?"
         sql = mysql.format(sql, [ req.params.id ])
