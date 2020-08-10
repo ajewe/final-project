@@ -5,7 +5,7 @@ const usersRouter = require('./routers/users');
 const sessionRouter = require('./routers/session')
 const logsRouter = require('./routers/logs');
 const booksRouter = require('./routers/books')
-const { authMiddleware } = require('./middleware')
+// const { authMiddleware } = require('./middleware')
 
 const app = express();
 app.use(cors())
@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 app.use('/user', usersRouter)
 app.use('/login', sessionRouter)
 
-app.use(authMiddleware)
+// app.use(authMiddleware)
 app.use('/logs', logsRouter)
 app.use('/books', booksRouter)
 
