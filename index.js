@@ -11,7 +11,6 @@ const app = express();
 app.use(cors())
 app.use(bodyParser.json())
 app.use(express.static("public"))
-app.get('*', (req, res) => res.sendFile(path.resolve('build', 'index.html'));
 
 const port = process.env.PORT || 4001;
 
