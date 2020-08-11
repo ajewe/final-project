@@ -18,12 +18,12 @@ app.get('/', (req, res) => {
   res.send('Welcome to our server!')
 })
 
-app.use('/user', usersRouter)
-app.use('/login', sessionRouter)
+app.use('/api/user', usersRouter)
+app.use('/api/login', sessionRouter)
 
 app.use(authMiddleware)
-app.use('/logs', logsRouter)
-app.use('/books', booksRouter)
+app.use('/api/logs', logsRouter)
+app.use('/api/books', booksRouter)
 
 app.listen(port, () => {
  console.log(`Web server is listening on port ${port}!`);
