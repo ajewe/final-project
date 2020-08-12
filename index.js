@@ -25,6 +25,14 @@ app.use(authMiddleware)
 app.use('/api/logs', logsRouter)
 app.use('/api/books', booksRouter)
 
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'), (err) => {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
 app.listen(port, () => {
  console.log(`Web server is listening on port ${port}!`);
 });
