@@ -10,20 +10,15 @@ const { authMiddleware } = require('./middleware')
 const app = express();
 app.use(cors())
 app.use(bodyParser.json())
-app.use(express.static("public"))
+app.use(express.static(path.join(__dirname, 'public')))
 
 const port = process.env.PORT || 4001;
-
-app.get('/', (req, res) => {
-  res.send('Welcome to our server!')
-})
 
 app.use('/api/user', usersRouter)
 app.use('/api/login', sessionRouter)
 
-app.use(authMiddleware)
-app.use('/api/logs', logsRouter)
-app.use('/api/books', booksRouter)
+app.use('/api/logs', authMiddleware, logsRouter)
+app.use('/api/books', authMiddleware, booksRouter)
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'), (err) => {
